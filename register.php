@@ -18,8 +18,8 @@ if (count($data) != 0) {
     if (isset($data['password']) && strlen($data['password']) < 6) {
         $errors[] = "password 6 and more latters";
     }
-    if (!isset($data['password']) || $data['password'] != '') {
-        $errors[] = 'password is vaild';
+    if (empty($data['password'])) {
+        $errors[] = 'password is required';
     }
 
 
@@ -55,8 +55,8 @@ if (count($data) != 0) {
 
         <h1>إنشاء حساب جديد</h1>
         <nav>
-            <a href="index.html">الرئيسية</a>
-            <a href="login.html">تسجيل الدخول</a>
+            <a href="index.php">الرئيسية</a>
+            <a href="login.php">تسجيل الدخول</a>
         </nav>
     </header>
 

@@ -3,7 +3,7 @@ include_once 'tools/database.php';
 include_once 'tools/tools.php';
 
 
-
+print_r($_POST);
 if (checkAuth())
     go('products', null, false);
 
@@ -18,13 +18,13 @@ if (count($data) != 0) {
     if (isset($data['password']) && strlen($data['password']) < 6) {
         $errors[] = "password 6 and more latters";
     }
-    if (!isset($data['password']) || $data['password'] != '') {
+    if (empty($data['password'])) {
         $errors[] = 'password is vaild';
     }
 
 
     if (count($errors) == 0) {
-        $value = $mysql->sql_where('users', 'email', $data['eamil']);
+        $value = $mysql->sql_where('users', 'email', $data['email'])[0];
         if ($value) {
 
             if ($data['password'] = $value['password']) {
@@ -70,10 +70,10 @@ if (count($data) != 0) {
     <section class="form-container">
         <form method="post">
             <label>البريد الإلكتروني:</label>
-            <input type="email" required>
+            <input type="email" name="email" required>
 
             <label>كلمة المرور:</label>
-            <input type="password" required>
+            <input type="password" name="password" required>
 
             <button type="submit">دخول</button>
         </form>

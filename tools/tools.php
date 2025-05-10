@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 
 
@@ -34,7 +36,7 @@ function delete_session($key)
 
 function checkAuth()
 {
-    return isset(get_session('user')['id']);
+    return isset(get_session('user')['eamil']);
 }
 
 function go($url, $arg = null, $return = true)
