@@ -7,7 +7,7 @@ class Mysql_api_code
 {
     private $db;
 
-    protected function __construct($db)
+    public function __construct($db)
     {
         $this->db = $db;
     }
@@ -19,7 +19,7 @@ class Mysql_api_code
      * @return mysql_result|bool  
      * @see https://t.me/api_tele 
      */
-    protected function sql_write($dir, $values)
+    public function sql_write($dir, $values)
     {
         mysqli_query($this->db, "SET NAMES utf8");
         mysqli_query($this->db, "SET CHARACTER SET utf8");
@@ -52,7 +52,7 @@ class Mysql_api_code
      * @return array|false  
      * @see https://t.me/api_tele 
      */
-    protected function sql_read($dir, $file)
+    public function sql_read($dir, $file)
     {
         mysqli_query($this->db, "SET NAMES utf8");
         mysqli_query($this->db, "SET CHARACTER SET utf8");
@@ -77,7 +77,7 @@ class Mysql_api_code
      * @return array|false  
      * @see https://t.me/api_tele 
      */
-    protected function sql_where($dir, $file, $value)
+    public function sql_where($dir, $file, $value)
     {
         mysqli_query($this->db, "SET NAMES utf8");
         mysqli_query($this->db, "SET CHARACTER SET utf8");
@@ -91,7 +91,7 @@ class Mysql_api_code
     }
 
 
-    protected function sql_readarray($dir)
+    public function sql_readarray($dir)
     {
         mysqli_query($this->db, "SET NAMES utf8");
         mysqli_query($this->db, "SET CHARACTER SET utf8");
@@ -110,7 +110,7 @@ class Mysql_api_code
      * @return array|false  
      * @see https://t.me/api_tele 
      */
-    protected function sql_edit($dir, $file, $old_value, $new_value)
+    public function sql_edit($dir, $file, $old_value, $new_value)
     {
         mysqli_query($this->db, "SET NAMES utf8");
         mysqli_query($this->db, "SET CHARACTER SET utf8");
@@ -134,7 +134,7 @@ class Mysql_api_code
      * @return  mysqli_result|false  
      * @see https://t.me/api_tele 
      */
-    protected function sql_del($dir, $file, $value)
+    public function sql_del($dir, $file, $value)
     {
         mysqli_query($this->db, "SET NAMES utf8");
         mysqli_query($this->db, "SET CHARACTER SET utf8");
@@ -153,7 +153,7 @@ class Mysql_api_code
             return false;
         }
     }
-    
+
     /** 
      * Create table in mysql 
      * @param string $name name the table 
@@ -161,7 +161,7 @@ class Mysql_api_code
      * @return array|false  
      * @see https://t.me/api_tele 
      */
-    protected function sql_create_table($name, $names_col = [])
+    public function sql_create_table($name, $names_col = [])
     {
         mysqli_query($this->db, "SET NAMES utf8");
         mysqli_query($this->db, "SET CHARACTER SET utf8");
@@ -178,7 +178,7 @@ class Mysql_api_code
      * check if table exists in mysql
      * @param string $name name the table
      */
-    protected function sql_check_table($name)
+    public function sql_check_table($name)
     {
         mysqli_query($this->db, "SET NAMES utf8");
         mysqli_query($this->db, "SET CHARACTER SET utf8");
@@ -196,7 +196,7 @@ class Mysql_api_code
      * @return array|false  
      * @see https://t.me/api_tele 
      */
-    protected function sql_add_col($name_T, $name_col)
+    public function sql_add_col($name_T, $name_col)
     {
         mysqli_query($this->db, "SET NAMES utf8");
         mysqli_query($this->db, "SET CHARACTER SET utf8");
@@ -206,4 +206,25 @@ class Mysql_api_code
             return false;
         }
     }
+}
+$db = mysqli_connect('localhost', 'root', '', 'store');
+$mysql = new Mysql_api_code($db);
+if (!$mysql->sql_check_table('users')) {
+    $mysql->sql_create_table('users', [
+        "id INT(11) AUTO_INCREMENT PRIMARY KEY",
+        "username VARCHAR(255) NOT NULL",
+        "role ENUM('admin', 'user') NOT NULL DEFAULT 'user'",
+        "email VARCHAR(255) NOT NULL",
+        "password VARCHAR(255) NOT NULL",
+        "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
+    ]);
+}
+if (!$mysql->sql_check_table('products')) {
+    $mysql->sql_create_table('products', [
+        "id INT(11) AUTO_INCREMENT PRIMARY KEY",
+        "product_name VARCHAR(255) NOT NULL",
+        "price DECIMAL(10,2) NOT NULL",
+        "description TEXT",
+
+    ]);
 }
