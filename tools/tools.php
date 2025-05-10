@@ -22,7 +22,15 @@ function add_session($key, $value)
         $_SESSION[$key] = $value;
     }
 }
-
+function delete_session($key)
+{
+    if (isset($_SESSION[$key])) {
+        unset($_SESSION[$key]);
+    }
+    if (isset($_COOKIE[$key])) {
+        setcookie($key, '', time() - 3600, '/');
+    }
+}
 
 function checkAuth()
 {
