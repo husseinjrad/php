@@ -24,21 +24,29 @@ if (count($data) != 0) {
 
 
     if (count($errors) == 0) {
-        $data['role'] = 'user';
-        $mysql->sql_write('users', $data);
-        $data['id'] = '999';
+        $value = $mysql->sql_where('users', 'email', $data['eamil']);
+        if ($value) {
 
-        add_session('user',$data);
-        go('products', null, false);
-    } else {
+            if ($data['password'] = $value['password']) {
+
+                add_session('user', $data);
+                go('products', null, false);
+            } else {
+                $errors[] = 'vaild th password';
+            }
+        } else {
+            $errors[] = 'email not found';
+        }
+    }
+    if (count($errors) != 0) {
         foreach ($errors as $value) {
             echo $value . "<br>";
         }
     }
 }
 
-?>
 
+?>
 
 
 <!DOCTYPE html>
@@ -46,32 +54,28 @@ if (count($data) != 0) {
 
 <head>
     <meta charset="UTF-8">
-    <title>إنشاء حساب</title>
+    <title>تسجيل الدخول</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header>
-
-        <h1>إنشاء حساب جديد</h1>
+        <h1>تسجيل الدخول</h1>
         <nav>
             <a href="index.html">الرئيسية</a>
-            <a href="login.html">تسجيل الدخول</a>
+            <a href="register.html">إنشاء حساب</a>
         </nav>
     </header>
 
     <section class="form-container">
         <form method="post">
-            <label>الاسم الكامل:</label>
-            <input type="text" name="username" required>
-
             <label>البريد الإلكتروني:</label>
-            <input type="email" name="email" required>
+            <input type="email" required>
 
             <label>كلمة المرور:</label>
-            <input type="password" name="password" required>
+            <input type="password" required>
 
-            <button type="submit">تسجيل</button>
+            <button type="submit">دخول</button>
         </form>
     </section>
 </body>
