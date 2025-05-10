@@ -31,7 +31,9 @@ function checkAuth()
 
 function go($url, $arg = null, $return = true)
 {
-    define('URL', $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME']);
+    $scheme = isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http';
+    $serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'localhost';
+    define('URL', $scheme . "://" . $serverName);
     $url = URL . '/' . $url;
     $urlParts = explode(".", $url);
     if (end($urlParts) != 'php') {
